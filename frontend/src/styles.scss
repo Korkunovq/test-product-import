@@ -1,0 +1,101 @@
+@use '@angular/material' as mat;
+
+:root {
+  --bg-0: #eef3f1;
+  --bg-1: #f7faf8;
+  --surface: #ffffff;
+  --ink: #1c2b27;
+  --muted: #5f716b;
+  --line: #d7e2dd;
+  --accent: #0f6b5c;
+  --accent-soft: #d8efe9;
+  --danger: #b42318;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(28, 43, 39, 0.08);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(1200px 500px at 10% -10%, #d9efe8 0%, transparent 55%),
+    radial-gradient(900px 420px at 100% 0%, #e4ebe8 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-0));
+  background-attachment: fixed;
+}
+
+@include mat.core();
+
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$green-palette,
+      tertiary: mat.$azure-palette,
+    ),
+  )
+);
+
+html {
+  @include mat.all-component-themes($theme);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.page-card .mat-mdc-card-header {
+  padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.page-card .mat-mdc-card-content {
+  padding: 1rem 1.5rem 1.5rem;
+}
+
+.page-title {
+  margin: 0;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.page-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.section-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mat-mdc-form-field {
+  font-family: inherit;
+}

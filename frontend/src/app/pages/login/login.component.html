@@ -1,0 +1,26 @@
+<div class="login-page">
+  <section class="page-card login-card">
+    <header>
+      <p class="eyebrow">Product Import</p>
+      <h1 class="page-title">Вход в систему</h1>
+      <p class="page-subtitle">Используйте учётную запись администратора</p>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Пароль</mat-label>
+        <input matInput formControlName="password" type="password" />
+      </mat-form-field>
+      @if (error) {
+        <p class="error">{{ error }}</p>
+      }
+      <button mat-flat-button color="primary" class="submit" type="submit" [disabled]="form.invalid">
+        Войти
+      </button>
+    </form>
+  </section>
+</div>

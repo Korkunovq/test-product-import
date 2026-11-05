@@ -1,0 +1,43 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Kernel\AppFactory;
+use Symfony\Component\Messenger\Worker;
+use Symfony\Component\Messenger\WorkerMetadata;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->safeLoad();
+
+$command = $argv[1] ?? 'help';
+
+$container = AppFactory::buildContainer();
+
+if ($command === 'messenger:consume') {
+    $bus = $container->get('messenger.bus.worker');
+    $receiver = $container->get('messenger.receiver');
+    $worker = new Worker(['async' => $receiver], $bus);
+    echo "Consuming messages...\n";
+    $worker->run();
+    exit(0);
+}
+
+if ($command === 'migrations:migrate') {
+    $migrations = $container->get('migrations.runner');
+    $migrations->migrate();
+    echo "Migrations applied.\n";
+    exit(0);
+}
+
+if ($command === 'fixtures:load') {
+    $loader = $container->get(App\Fixtures\DataFixtures::class);
+    $loader->load();
+    echo "Fixtures loaded.\n";
+    exit(0);
+}
+
+echo "Usage: console [messenger:consume|migrations:migrate|fixtures:load]\n";
+exit(1);

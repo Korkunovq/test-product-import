@@ -1,0 +1,196 @@
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.back {
+  width: fit-content;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 0.25rem 0;
+}
+
+.back:hover {
+  color: var(--accent);
+}
+
+.banner {
+  background: var(--accent-soft);
+  border: 1px solid #b7ddd3;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+}
+
+.banner div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.55rem;
+  font-size: 0.95rem;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 420px) 1fr;
+  gap: 0;
+}
+
+.gallery {
+  padding: 1.25rem;
+  background: linear-gradient(160deg, #f3f8f6, #e8f1ee);
+  border-right: 1px solid var(--line);
+}
+
+.hero-image {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.hero-image img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+}
+
+.thumbs a {
+  display: block;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.thumbs img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.no-image {
+  min-height: 280px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.info {
+  padding: 1.5rem 1.75rem 1.75rem;
+}
+
+.code {
+  margin: 0 0 0.4rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  word-break: break-all;
+}
+
+.page-title {
+  margin-bottom: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.price-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.discount {
+  background: #fff4e5;
+  color: #9a5b00;
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.block {
+  margin-top: 1.35rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.description {
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.attrs {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.attr {
+  background: var(--bg-1);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+}
+
+.attr dt {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.attr dd {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.errors ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--danger);
+  line-height: 1.5;
+}
+
+@media (max-width: 860px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .info {
+    padding: 1.25rem;
+  }
+}

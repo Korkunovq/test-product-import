@@ -1,0 +1,158 @@
+.import-page .head {
+  padding: 1.35rem 1.5rem 0.5rem;
+}
+
+.body {
+  padding: 0.5rem 1.5rem 1.75rem;
+}
+
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 160px;
+  border: 2px dashed #b7cfc7;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f7fbf9, #eef6f3);
+  cursor: pointer;
+  padding: 1.25rem;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.dropzone:hover,
+.dropzone.has-file {
+  border-color: var(--accent);
+  background: #e9f6f1;
+}
+
+.dropzone input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.drop-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.drop-hint {
+  color: var(--muted);
+  font-size: 0.92rem;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.error {
+  margin-top: 0.85rem;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.status {
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fbfdfc;
+}
+
+.status-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.status-head .section-title {
+  margin: 0;
+}
+
+.badge {
+  background: #e8eef2;
+  color: #355468;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge.done {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge.fail {
+  background: #fde8e6;
+  color: var(--danger);
+}
+
+mat-progress-bar {
+  margin-bottom: 1rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.stats div {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.7rem 0.8rem;
+}
+
+.stats span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.2rem;
+}
+
+.stats strong {
+  font-size: 1.05rem;
+}
+
+.errors {
+  margin-top: 1.25rem;
+}
+
+.errors ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.errors li {
+  background: #fff7f6;
+  border: 1px solid #f3c7c2;
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.errors .code {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}

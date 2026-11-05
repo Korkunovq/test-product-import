@@ -1,0 +1,80 @@
+@if (product$ | async; as product) {
+  <div class="detail">
+    <a class="back" routerLink="/products">← К списку товаров</a>
+
+    @if (importJob && (importJob.status === 'pending' || importJob.status === 'processing')) {
+      <section class="banner">
+        <div>
+          <strong>Импорт в процессе</strong>
+          <span>{{ importJob.progress_percent }}%</span>
+        </div>
+        <mat-progress-bar mode="determinate" [value]="importJob.progress_percent"></mat-progress-bar>
+      </section>
+    }
+
+    <article class="page-card detail-layout">
+      <div class="gallery">
+        @if (product.images?.length) {
+          <a class="hero-image" [href]="(product.images![0].path || product.images![0].url)" target="_blank" rel="noopener">
+            <img [src]="product.images![0].path || product.images![0].url" [alt]="product.name" />
+          </a>
+          @if ((product.images?.length ?? 0) > 1) {
+            <div class="thumbs">
+              @for (img of product.images!.slice(1); track img.url) {
+                <a [href]="img.path || img.url" target="_blank" rel="noopener">
+                  <img [src]="img.path || img.url" [alt]="product.name" />
+                </a>
+              }
+            </div>
+          }
+        } @else {
+          <div class="no-image">Нет изображений</div>
+        }
+      </div>
+
+      <div class="info">
+        <p class="code">{{ product.external_code }}</p>
+        <h1 class="page-title">{{ product.name }}</h1>
+
+        <div class="price-row">
+          <span class="price">{{ product.price | number: '1.2-2' }} ₽</span>
+          @if (product.discount != null) {
+            <span class="discount">Скидка {{ product.discount | number: '1.0-2' }}%</span>
+          }
+        </div>
+
+        @if (product.description) {
+          <section class="block">
+            <h2 class="section-title">Описание</h2>
+            <p class="description">{{ product.description }}</p>
+          </section>
+        }
+
+        @if (product.attributes?.length) {
+          <section class="block">
+            <h2 class="section-title">Дополнительные атрибуты</h2>
+            <dl class="attrs">
+              @for (attr of product.attributes; track attr.key) {
+                <div class="attr">
+                  <dt>{{ attr.key }}</dt>
+                  <dd>{{ attr.value || '—' }}</dd>
+                </div>
+              }
+            </dl>
+          </section>
+        }
+
+        @if (importJob?.errors?.length) {
+          <section class="block errors">
+            <h2 class="section-title">Ошибки импорта</h2>
+            <ul>
+              @for (err of importJob!.errors; track err.row + err.message) {
+                <li>Строка {{ err.row }}: {{ err.message }}</li>
+              }
+            </ul>
+          </section>
+        }
+      </div>
+    </article>
+  </div>
+}

@@ -1,0 +1,93 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-products}
+      POSTGRES_USER: ${DB_USER:-app}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-app} -d ${DB_NAME:-products}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      target: runtime
+    env_file:
+      - backend/.env
+    environment:
+      DB_HOST: db
+      MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f/messages
+      STORAGE_PATH: /var/www/storage
+      PUBLIC_STORAGE_URL: http://localhost:8080/storage
+      CORS_ORIGIN: http://localhost:4200
+    volumes:
+      - storage:/var/www/storage
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+      target: runtime
+    command: ["php", "bin/console", "messenger:consume"]
+    env_file:
+      - backend/.env
+    environment:
+      DB_HOST: db
+      MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f/messages
+      STORAGE_PATH: /var/www/storage
+      PUBLIC_STORAGE_URL: http://localhost:8080/storage
+    volumes:
+      - storage:/var/www/storage
+    depends_on:
+      db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - storage:/var/www/storage:ro
+    depends_on:
+      - app
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+      target: runtime
+    ports:
+      - "4200:80"
+    depends_on:
+      - nginx
+
+volumes:
+  pgdata:
+  storage:

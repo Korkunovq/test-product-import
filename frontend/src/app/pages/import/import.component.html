@@ -1,0 +1,67 @@
+<section class="page-card import-page">
+  <header class="head">
+    <h1 class="page-title">Импорт товаров</h1>
+    <p class="page-subtitle">
+      Загрузите файл <code>.xlsx</code> — импорт выполняется асинхронно через очередь RabbitMQ
+    </p>
+  </header>
+
+  <div class="body">
+    <label class="dropzone" [class.has-file]="!!selectedFile">
+      <input type="file" accept=".xlsx" (change)="onFileSelected($event)" />
+      <span class="drop-title">Выберите файл Excel</span>
+      <span class="drop-hint">
+        @if (selectedFile) {
+          {{ selectedFile.name }}
+        } @else {
+          Нажмите, чтобы выбрать .xlsx
+        }
+      </span>
+    </label>
+
+    <div class="actions">
+      <button mat-flat-button color="primary" (click)="upload()" [disabled]="!selectedFile">
+        Загрузить и импортировать
+      </button>
+    </div>
+
+    @if (uploadError) {
+      <p class="error">{{ uploadError }}</p>
+    }
+
+    @if (job) {
+      <section class="status">
+        <div class="status-head">
+          <h2 class="section-title">Статус задачи #{{ job.id }}</h2>
+          <span class="badge" [class.done]="job.status === 'completed'" [class.fail]="job.status === 'failed'">
+            {{ job.status }}
+          </span>
+        </div>
+        <mat-progress-bar mode="determinate" [value]="job.progress_percent"></mat-progress-bar>
+        <div class="stats">
+          <div><span>Обработано</span><strong>{{ job.processed_rows }} / {{ job.total_rows }}</strong></div>
+          <div><span>Успешно</span><strong>{{ job.success_count }}</strong></div>
+          <div><span>Ошибок</span><strong>{{ job.error_count }}</strong></div>
+          <div><span>Прогресс</span><strong>{{ job.progress_percent }}%</strong></div>
+        </div>
+      </section>
+
+      @if (job.errors.length) {
+        <section class="errors">
+          <h2 class="section-title">Отчёт об ошибках</h2>
+          <ul>
+            @for (err of job.errors; track err.row + err.message) {
+              <li>
+                <strong>Строка {{ err.row }}</strong>
+                @if (err.external_code) {
+                  <span class="code">({{ err.external_code }})</span>
+                }
+                — {{ err.message }}
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    }
+  </div>
+</section>

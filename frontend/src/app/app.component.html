@@ -1,0 +1,17 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" routerLink="/products">Product Import</a>
+
+    @if (auth.isAuthenticated()) {
+      <nav class="nav">
+        <a routerLink="/import" routerLinkActive="active">Импорт</a>
+        <a routerLink="/products" routerLinkActive="active">Товары</a>
+      </nav>
+      <button class="logout" type="button" (click)="logout()">Выход</button>
+    }
+  </div>
+</header>
+
+<main class="container">
+  <router-outlet />
+</main>

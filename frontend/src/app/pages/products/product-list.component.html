@@ -1,0 +1,71 @@
+<section class="page-card list-page">
+  <header class="head">
+    <div>
+      <h1 class="page-title">Список товаров</h1>
+      <p class="page-subtitle">Поиск, фильтр по цене и постраничная загрузка с сервера</p>
+    </div>
+  </header>
+
+  <form [formGroup]="filtersForm" class="filters">
+    <mat-form-field appearance="outline" class="grow">
+      <mat-label>Поиск по названию</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Цена от</mat-label>
+      <input matInput type="number" formControlName="priceMin" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Цена до</mat-label>
+      <input matInput type="number" formControlName="priceMax" />
+    </mat-form-field>
+  </form>
+
+  @if (loading$ | async) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  <div class="table-wrap">
+    <table mat-table [dataSource]="(products$ | async) ?? []" class="products-table">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Наименование</th>
+        <td mat-cell *matCellDef="let row" class="name-cell">
+          <a [routerLink]="['/products', row.id]">{{ row.name }}</a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Цена</th>
+        <td mat-cell *matCellDef="let row" class="price-cell">{{ row.price | number: '1.2-2' }} ₽</td>
+      </ng-container>
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef>Скидка</th>
+        <td mat-cell *matCellDef="let row">
+          @if (row.discount != null) {
+            <span class="pill">{{ row.discount | number: '1.0-2' }}%</span>
+          } @else {
+            <span class="muted">—</span>
+          }
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <a class="open-link" [routerLink]="['/products', row.id]">Открыть →</a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  @if (meta$ | async; as meta) {
+    <mat-paginator
+      [length]="meta.total"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPage($event)"
+    ></mat-paginator>
+  }
+</section>
